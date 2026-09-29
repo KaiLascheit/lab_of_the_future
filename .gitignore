@@ -1,0 +1,5 @@
+.venv/
+.vscode/
+data/eat_2/
+.env
+__pycache__/

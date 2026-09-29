@@ -1,0 +1,17 @@
+These images are consecutive frames from a first-person wearable camera.
+
+For each image, the wearer's eye gaze position is provided as an (x, y) pixel coordinate. Use the gaze positions together with the images to infer what the wearer is looking at.
+
+Additionally, this is the speech that was transcribed from the scene:
+{transcribed_speech}
+
+Describe:
+1. The overall scene and environment.
+2. What the wearer is doing.
+3. What the wearer appears to be looking at.
+4. Any objects the wearer is interacting with or reaching for.
+5. How the scene changes across the frames.
+
+Base gaze-related conclusions on both the supplied gaze coordinates and visual evidence.
+
+Keep your description to below 200 words.

@@ -1,0 +1,119 @@
+{
+    "sequences": {
+        "eat_2": {
+            "video_main_rgb": {
+                "filename": "AriaGen2PilotDataset_v1.0_eat_2_preview_rgb.mp4",
+                "sha1sum": "a2179320d3d5f3d47155d7631b59b7f7e8a0ee04",
+                "file_size_bytes": 661277146,
+                "download_url": "https://scontent.xx.fbcdn.net/m1/v/t6/An_omC5K-hLYEmYeqFnDIF1JCpx4CLSyA-e5W2pCF3lvewLgTPY7pdlz_QTgq5vgADLjOM0mxjDjKbLqc3QoB5b5Ch6KQvlPtsWiCZtS9-SWLmm0Ow2BvJ8Zt4UThhasp0MDdBf8xhHk8qDSuDcfuQ_HIyeHvPEbPSGx7ZYyOxuA1Cll9y9TAgA.mp4/AriaGen2PilotDataset_v1.0_eat_2_preview_rgb.mp4?_nc_gid&ccb=10-5&oh=00_AQIOdHC58fpkrjTCIQE_BSzU_ydVD4H3vuBhnjsmndkROQ&oe=6AC1C6A9&_nc_sid=b7f247"
+            },
+            "mps_slam_trajectories": {
+                "filename": "AriaGen2PilotDataset_v1.0_eat_2_mps_slam_trajectories.zip",
+                "sha1sum": "566f2bcbc0dde0455cc129eae4054ec2788e5be9",
+                "file_size_bytes": 30208154,
+                "download_url": "https://scontent.xx.fbcdn.net/m1/v/t6/An9eZpi2C41s-SYki0-LRrZNJmKYyjPrqpS92cb9-pJ-jRPiVsszG9yZxeb43HdCwk0looxBfcZA5sK3RKwpfmeUnWaXplR59CMbpMIhHDdWpM9wkIV3qza4373nh3DMSfkTs-jMhWUaL16xEU9HYBqyC9oiwRhKmsJii0807clzdUU_QuarQnZ3SOownlM.zip/AriaGen2PilotDataset_v1.0_eat_2_mps_slam_trajectories.zip?_nc_gid&ccb=10-5&oh=00_AQKUzYpf5FfPzDRrCdLuGAAiy2LhkT_KpQAQskeHwzrA4A&oe=6AC1EE28&_nc_sid=b7f247"
+            },
+            "mps_slam_calibration": {
+                "filename": "AriaGen2PilotDataset_v1.0_eat_2_mps_slam_calibration.zip",
+                "sha1sum": "32f3bbb6aff31701c92c21b23278a9e457e3954d",
+                "file_size_bytes": 523038,
+                "download_url": "https://scontent.xx.fbcdn.net/m1/v/t6/An-TK7uNyJsjsFvTUv4eMH6-NXngs64FGPmI3fCRoRdx4OkaxdyH2pULiYBbINYUQRrFDGwextk2598_qpJ7cYJfqNkuOd37PCfnfG1-uxZL79u3_AA34Sotrqs0psMx_t4RFGR0J_zyz15h1tbtGFxeCDI-tv9x8qhgoEfhTxN6C6_kfPpuoJ-PMT0.zip/AriaGen2PilotDataset_v1.0_eat_2_mps_slam_calibration.zip?_nc_gid&ccb=10-5&oh=00_AQLVn8tG0zOtDyQh6efkxtf6N6fELbD-86nXqTcmQmoW_g&oe=6AC1F8F0&_nc_sid=b7f247"
+            },
+            "mps_slam_points": {
+                "filename": "AriaGen2PilotDataset_v1.0_eat_2_mps_slam_points.zip",
+                "sha1sum": "0d135b1508ebc492e5c43bcf758a4b864b61edef",
+                "file_size_bytes": 3569497526,
+                "download_url": "https://scontent.xx.fbcdn.net/m1/v/t6/An8I-5mKPhHcAA6c5-IGRcqsYxpRyx71V8TQevIfNWeRdn95ixEfpyQ6x8Wl5slAwdypkItXFsf5HMdIBmeh7XepFajS9fPl_5JAq-3GWmSkHccPIkSOdMAqvSQQOP5Z8oGRRYKcFuUHnSzjIIpIJRDVlvg2CegZHUZd5bzuwXEKNr8C_6pHsI_sMQ.zip/AriaGen2PilotDataset_v1.0_eat_2_mps_slam_points.zip?_nc_gid&ccb=10-5&oh=00_AQJ31LquIxLfrh5qCFTtd8K8mhnaiQF6dRugyyezfiFu6Q&oe=6AC1F5BC&_nc_sid=b7f247"
+            },
+            "mps_slam_summary": {
+                "filename": "AriaGen2PilotDataset_v1.0_eat_2_mps_slam_summary.zip",
+                "sha1sum": "1ef4cd29d5d8796c6b0dc3763ce8b89effea8950",
+                "file_size_bytes": 746,
+                "download_url": "https://scontent.xx.fbcdn.net/m1/v/t6/An8XdMk_yF4wO8M79ay0iqMoGfpmzeaH80_8EsxYR4Bv93WRLH10lw3wv-Ay9ZdTwyrQ9OgxJYvad7poIuz2XJkVPaoJlzl-OPiBFktS_88tDI2q3lp44wM6mhLUhzBZMzg_gpHnEAqEbGkcVsdEpNq0uq_URkWjPhQKyeqjv0j0A7uVVaBrEwzkPg.zip/AriaGen2PilotDataset_v1.0_eat_2_mps_slam_summary.zip?_nc_gid&ccb=10-5&oh=00_AQIPfYprxGE8eX2O9m4DNDGDXqyDF6XcxhhBlWrb46tH_g&oe=6AC1EC99&_nc_sid=b7f247"
+            },
+            "mps_hand_tracking": {
+                "filename": "AriaGen2PilotDataset_v1.0_eat_2_mps_hand_tracking.zip",
+                "sha1sum": "eb1b036b595da9b8983e54b4fb87a29d210323a3",
+                "file_size_bytes": 5310952,
+                "download_url": "https://scontent.xx.fbcdn.net/m1/v/t6/An91soVQnU9wUubGJnzKY_K1vVn427sz20a6iYjAqSCexXtEkSiSD4bPoqjLd4V0e26VgJOk7Cn-gQZqCD3S03y-GOo5hUlE-lhOdLHNDNQyaI4P-b7NsGj_5AGEPtjvByZb_qQuO1RQ2CiSj5hHnzLQU0u2cxhtDiHt2vFyzEjQW2I840NVtmE.zip/AriaGen2PilotDataset_v1.0_eat_2_mps_hand_tracking.zip?_nc_gid&ccb=10-5&oh=00_AQJegEBuNnb0vgDfB7Lj3xJ5ObdfdjtTtQIn8fMgUTiRHg&oe=6AC1CB25&_nc_sid=b7f247"
+            },
+            "mps_artifacts": {
+                "filename": "AriaGen2PilotDataset_v1.0_eat_2_mps_artifacts.zip",
+                "sha1sum": "56a550e2c6eaf59a55eabd0be1a7fdca9e8d156b",
+                "file_size_bytes": 3605540776,
+                "download_url": "https://scontent.xx.fbcdn.net/m1/v/t6/An8_chRA3cTQ43KsZfYx_yE2NScmrZLYVM33Rw17SFLEuTkGLA6jGVaHs7oan3JhEe7PsipMNF2b0W2qZek35AIW2fpyEEyOv7OUGj-MN2dF095frinRgUPIR9xBdrXHNoXAMLC1NbbOAltHpWwr-dWKYTKnnClGY5MpgVR2bC-dSuBIy71qjqU.zip/AriaGen2PilotDataset_v1.0_eat_2_mps_artifacts.zip?_nc_gid&ccb=10-5&oh=00_AQLl2sdgNvV8ZMYbzF_7sypMLdxnRxdovuEhEqF1AN6twA&oe=6AC1D08C&_nc_sid=b7f247"
+            },
+            "main_vrs": {
+                "filename": "AriaGen2PilotDataset_v1.0_eat_2_main_recording.vrs",
+                "sha1sum": "7b09567b56f66552b6cb2245e4002cfdd3940d1c",
+                "file_size_bytes": 2804783432,
+                "download_url": "https://scontent.xx.fbcdn.net/m1/v/t6/An8fwYCbBW0n7NjZW20AJ24MHKaxvs8bfYE0grRXSVv94Zd3WjIdPSUhwH_6UIoMOTw1aZFFzBf4MJUYy7LEBG7aLwb3z-BwNNAWU314vPbyn0tEEk6DqTAmG3qXHHiXcUr9o_roE0-f5wCESwQ-nzh_3-q8tE851KiGj_yjIYhRR_JhPhrjeA.vrs/AriaGen2PilotDataset_v1.0_eat_2_main_recording.vrs?_nc_gid&ccb=10-5&oh=00_AQL6hS6a7j7_4ugvIva6N9gCTLinYU90i_sMvaGsKrxwfw&oe=6AC1D901&_nc_sid=b7f247"
+            },
+            "depth": {
+                "filename": "AriaGen2PilotDataset_v1.0_eat_2_depth.zip",
+                "sha1sum": "c9dd86c0542a289dc8a779337ffb4b7d47e96af7",
+                "file_size_bytes": 2015765324,
+                "download_url": "https://scontent.xx.fbcdn.net/m1/v/t6/An9zrJ4zSNKRAtoeSEVJYapI2P_rDGfcCk6XuTvBauMktIo2S6UZDuf5RE-ODFKRTPs0BNqDPxK5AOiVmXKy2USq5hjzd2-7PYVMHRn4rqatUEWAiTZCqtJ0ppXNnEpmTCi1HsUHkYsZASGaLsERt28PFEIbJYqjizo3FN6OrkRYn0g.zip/AriaGen2PilotDataset_v1.0_eat_2_depth.zip?_nc_gid&ccb=10-5&oh=00_AQKJcgqwHPdj_Vi4-d43_boJErnv_2kCXkdprAR3MW-i_g&oe=6AC1F0A5&_nc_sid=b7f247"
+            },
+            "scene": {
+                "filename": "AriaGen2PilotDataset_v1.0_eat_2_scene.zip",
+                "sha1sum": "bd27cb5df678850f8907487e91e1fbf529737b25",
+                "file_size_bytes": 2018873,
+                "download_url": "https://scontent.xx.fbcdn.net/m1/v/t6/An8IU221irJZvmBIB_i05jKn9Eyq2OyriLqKgfR3OPDn42US4Z_Zrji-Iav7kULf31cOGPbAkP9H-h5tm1O6NCzcvgtcV1i3fRBAP1LeN0DYCaiQzd59jCiBC0QJ_6HOL8ti0IFFy6INVYkrQqgil_k6zHnpqtjjAuHwVqvPtqFgxG4.zip/AriaGen2PilotDataset_v1.0_eat_2_scene.zip?_nc_gid&ccb=10-5&oh=00_AQL_UKpboRDKAAeuewQF2-tiZ6hZIJjblYDVBDH-ap3wqQ&oe=6AC1EC5F&_nc_sid=b7f247"
+            },
+            "heart_rate": {
+                "filename": "AriaGen2PilotDataset_v1.0_eat_2_heart_rate.zip",
+                "sha1sum": "5a0f2298c939c1aefcdbd2261d5ad8c603941465",
+                "file_size_bytes": 1584,
+                "download_url": "https://scontent.xx.fbcdn.net/m1/v/t6/An_YkhxuneEGjrlcx0YNTK5POPPL6YuSC2ojzTHAs-t0NHdL4hX83RVYEmN9Bj24GEyyQ-Q4JIsBvL_Bs2iG5R6HhuXrBrqKtM7b29EZCq4ExEexrHWsoOuEEktS1Yu7n4QWrfZT9M3GnEOxpo3aIgdzO5QbF8VD1ndKERB2wGN2kFZejQ.zip/AriaGen2PilotDataset_v1.0_eat_2_heart_rate.zip?_nc_gid&ccb=10-5&oh=00_AQKk0yTYSoH4rg7q6_aW8DRL0iIvFP8FLgAKeANRiC0jtQ&oe=6AC1EAF4&_nc_sid=b7f247"
+            },
+            "diarization": {
+                "filename": "AriaGen2PilotDataset_v1.0_eat_2_diarization.zip",
+                "sha1sum": "397cbefc6c903001f04bcb841bb9850bd1f7daab",
+                "file_size_bytes": 2844,
+                "download_url": "https://scontent.xx.fbcdn.net/m1/v/t6/An-zcohaKTUQri5_y4bNq-QweQDdsAOuSoDZ8V_k9J03sLkoqe9r78EkpRO2Q1FijpcfroEQFs_vxjmA2mwixdjktBm_vEhq6WdQTodu582Bm1vd6-bQ3G-MKz92hrQLj7Ph7Y540f5OAAkXrH8xZxLljV_m64W2ohAwmzSAKt7e8XDxKZM.zip/AriaGen2PilotDataset_v1.0_eat_2_diarization.zip?_nc_gid&ccb=10-5&oh=00_AQKl1puIURhggu24YGiTLNMuf8Uq0qVI3tDoRMoaYy8rVw&oe=6AC1EDCF&_nc_sid=b7f247"
+            },
+            "hand_object_interaction": {
+                "filename": "AriaGen2PilotDataset_v1.0_eat_2_hand_object_interaction.zip",
+                "sha1sum": "1b4acf1e2019167a180faf60cb2fbad50b9510c3",
+                "file_size_bytes": 4739318,
+                "download_url": "https://scontent.xx.fbcdn.net/m1/v/t6/An9T4qxJz2YfsQu-o_JXIN5kCySUgUZ0SkBx7ohQb3_j5Acn4ENC87oH_wLHcq_-FFLuSHp-y2ORo5RZfFNw-XulmZpO0pKAvdFZ_GuqMAfPjY9-NmshDeVAHqqNUA637n8RBBB1Fd5ctekOomvpeujhRM_r5Fa8JI8GU1UismD9xdQcomaVdINXo32ISnth.zip/AriaGen2PilotDataset_v1.0_eat_2_hand_object_interaction.zip?_nc_gid&ccb=10-5&oh=00_AQJGv6wWuQBzgBAI5-_JddWkSWZWUiuH4UiPN7RBscInMw&oe=6AC1EF9C&_nc_sid=b7f247"
+            }
+        }
+    },
+    "sequence_config": {
+        "dataset_name": "AriaGen2PilotDataset",
+        "main": {
+            "recording": "video.vrs",
+            "mps": "mps"
+        },
+        "data_groups": {
+            "depth": [
+                "depth/pinhole_camera_parameters.json",
+                "depth/depth",
+                "depth/rectified_images",
+                "depth/summary.json"
+            ],
+            "scene": [
+                "scene/2d_bounding_box.csv",
+                "scene/3d_bounding_box.csv",
+                "scene/instances.json",
+                "scene/scene_objects.csv",
+                "scene/summary.json"
+            ],
+            "heart_rate": [
+                "heart_rate/heart_rate_results.csv",
+                "heart_rate/summary.json"
+            ],
+            "diarization": [
+                "diarization/diarization_results.csv",
+                "diarization/summary.json"
+            ],
+            "hand_object_interaction": [
+                "hand_object_interaction/hand_object_interaction_results.json",
+                "hand_object_interaction/summary.json"
+            ]
+        },
+        "release": "v1.0"
+    }
+}
