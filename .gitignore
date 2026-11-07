@@ -4,3 +4,6 @@ data/eat_2/
 .env
 __pycache__/
 stream/
+frames/
+streams/
+tracking_results/
