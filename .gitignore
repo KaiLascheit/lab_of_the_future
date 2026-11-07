@@ -7,3 +7,5 @@ stream/
 frames/
 streams/
 tracking_results/
+marker_check/
+dataset_building/data/
