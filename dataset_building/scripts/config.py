@@ -30,16 +30,25 @@ RESULTS_DIR = DATA_DIR / "results"
 # start/end are RGB frame indices (end exclusive, None = to the end); every frame
 # index used anywhere in these tools is the RGB frame index in that VRS.
 SESSIONS = {
-    "multi_p300_154736": {
-        "vrs": "streams/96-well_plate_pipetting_multi_p300_QR_20261105_154736.vrs",
-        "start": 0,
-        "end": None,
-    },
-    # "p1000_154354": {
-    #     "vrs": "streams/96-well_plate_pipetting_p1000_QR_20261105_154354.vrs",
-    #     "start": 0, "end": None,
-    #     "marker_id": 30,          # per-session override of PIPETTE_MARKER_ID
+    # "multi_p300_154736": {
+    #     "vrs": "streams/96-well_plate_pipetting_multi_p300_QR_20261105_154736.vrs",
+    #     "start": 0,
+    #     "end": None,
     # },
+    "p1000_162006": {
+        "vrs": "streams/Well_plate_p1000_2QR_20261107_162006.vrs",
+        "start": 0, "end": None,
+        "marker_id": 30,
+        "box_x": (-0.06, 0.04),   # tune so the plunger sits where it does in the p300 crops
+        "box_y": (-0.14, 0.01),
+    },
+    "p1000_162357": {
+        "vrs": "streams/Well_plate_p1000_2QR_3_20261107_162357.vrs",
+        "start": 0, "end": None,
+        "marker_id": 30,
+        "box_x": (-0.06, 0.04),   # tune so the plunger sits where it does in the p300 crops
+        "box_y": (-0.14, 0.01),
+    },
 }
 
 # ----------------------------------------------------------------------------- camera / marker

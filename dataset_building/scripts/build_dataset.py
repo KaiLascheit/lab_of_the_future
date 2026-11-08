@@ -23,7 +23,9 @@ import config as C
 # ----------------------------------------------------------------------------- SETTINGS
 TEST_SESSIONS = []            # e.g. ["p1000_154354"]; empty -> time split within sessions
 TEST_FRACTION = 0.3           # used when TEST_SESSIONS is empty
-TRANSITION_MARGIN = 2         # drop this many frames on each side of every label change
+TRANSITION_MARGIN = 2         # drop up to this many frames at each end of every event ...
+MIN_FRAMES_KEPT = 1           # ... but always keep at least this many in its middle, so
+                              # short presses aren't dropped entirely
 TRAIN_FRAMES_PER_EVENT = 5    # evenly spaced training frames per event (None = all)
 MAX_REPROJ_PX = 3.0           # drop frames whose tag fit is worse than this (None = off)
 MAX_AMBIGUITY = 0.8           # drop frames whose tag orientation may flip (None = off)
@@ -49,11 +51,19 @@ def build_session(session):
             event_ids[j] = f"{session}:{k:04d}"
         prev = lab
 
-    # Frames near any label change
+    # Frames near a label change: trim up to TRANSITION_MARGIN frames from each end of
+    # every event, shrinking the margin for short events so that at least
+    # MIN_FRAMES_KEPT frames in the middle survive.
     near_change = np.zeros(n, bool)
-    for j in range(1, n):
-        if labels[j] != labels[j - 1]:
-            near_change[max(0, j - TRANSITION_MARGIN):min(n, j + TRANSITION_MARGIN)] = True
+    start = 0
+    for j in range(1, n + 1):
+        if j == n or labels[j] != labels[start]:
+            if labels[start] in C.CLASSES:
+                length = j - start
+                m = min(TRANSITION_MARGIN, max(0, (length - MIN_FRAMES_KEPT) // 2))
+                near_change[start:start + m] = True
+                near_change[j - m:j] = True
+            start = j
 
     rows = []
     for j, (r, lab) in enumerate(zip(index, labels)):
@@ -123,11 +133,25 @@ def summarise(rows):
             usable = sum(r["usable"] for r in sel)
             picked = sum(r["train_pick"] for r in sel)
             print(f"{split:6} {cls:12} {len(events):7d} {usable:7d} {picked:7d}")
+    print(f"\n{'session':28} {'split':6} {'pressed ev':>10} {'not ev':>7} {'usable fr':>9}")
+    for s in dict.fromkeys(r["session"] for r in rows):
+        for split in ("train", "test"):
+            sel = [r for r in rows if r["session"] == s and r["split"] == split and r["usable"]]
+            if not sel:
+                continue
+            ev = lambda c: len({r["event_id"] for r in sel if r["label"] == c})
+            print(f"{s:28} {split:6} {ev('pressed'):10d} {ev('not_pressed'):7d} {len(sel):9d}")
     reasons = Counter(r["drop_reason"] for r in rows if not r["usable"])
     print("\nDropped frames:", dict(reasons))
-    n_test_press = len({r["event_id"] for r in rows if r["split"] == "test" and r["label"] == "pressed"})
+    all_press = {r["event_id"] for r in rows if r["label"] == "pressed"}
+    used_press = {r["event_id"] for r in rows if r["label"] == "pressed" and r["usable"]}
+    if len(used_press) < len(all_press):
+        print(f"{len(all_press) - len(used_press)} of {len(all_press)} labelled press events "
+              f"have no usable frame (no tag / poor tag fit / transition margin).")
+    n_test_press = len({r["event_id"] for r in rows
+                        if r["split"] == "test" and r["label"] == "pressed" and r["usable"]})
     if n_test_press < 20:
-        print(f"Note: only {n_test_press} pressed events in the test split - "
+        print(f"Note: only {n_test_press} usable pressed events in the test split - "
               f"metrics will be noisy (aim for 20-30+).")
 
 

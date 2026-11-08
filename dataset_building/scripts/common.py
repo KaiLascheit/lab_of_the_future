@@ -115,24 +115,34 @@ def estimate_pose(corners_px, size, cam, scale=1.0):
 
 
 # ----------------------------------------------------------------------------- crops
-def crop_axes():
+def crop_box(session=None):
+    """(box_x, box_y, up_sign) for a session: per-session "box_x" / "box_y" /
+    "up_sign" entries in config.SESSIONS override the global BOX_X / BOX_Y / UP_SIGN
+    (different pipettes carry their tag at different places)."""
+    cfg = C.SESSIONS.get(session, {}) if session is not None else {}
+    return (tuple(cfg.get("box_x", C.BOX_X)), tuple(cfg.get("box_y", C.BOX_Y)),
+            cfg.get("up_sign", C.UP_SIGN))
+
+
+def crop_axes(session=None):
     """Marker-plane coordinates (metres) of the crop's columns and rows, so that the
     pipette is upright: top row = furthest up the pipette."""
-    (x0, x1), (y0, y1) = C.BOX_X, C.BOX_Y
+    (x0, x1), (y0, y1), up_sign = crop_box(session)
     W = int(round((x1 - x0) * 1000 * C.CROP_PX_PER_MM))
     H = int(round((y1 - y0) * 1000 * C.CROP_PX_PER_MM))
-    if C.UP_SIGN < 0:
+    if up_sign < 0:
         xs, ys = np.linspace(x1, x0, W), np.linspace(y0, y1, H)
     else:
         xs, ys = np.linspace(x0, x1, W), np.linspace(y1, y0, H)
     return xs, ys
 
 
-def rectified_crop(img, T, cam, scale=1.0):
-    """Resample the marker plane over BOX_X x BOX_Y into an upright crop.
+def rectified_crop(img, T, cam, scale=1.0, session=None):
+    """Resample the marker plane over the session's crop box (BOX_X x BOX_Y unless
+    overridden per session) into an upright crop.
     Exact fisheye projection on a coarse grid (CROP_GRID_STEP_MM), bilinearly
     interpolated to full resolution - accurate and fast."""
-    xs, ys = crop_axes()
+    xs, ys = crop_axes(session)
     W, H = len(xs), len(ys)
     step = max(1, int(C.CROP_GRID_STEP_MM * C.CROP_PX_PER_MM))
     cols = np.unique(np.r_[np.arange(0, W, step), W - 1])

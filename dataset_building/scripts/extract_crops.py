@@ -51,7 +51,7 @@ def extract_session(name, overwrite=False):
             crop = None
             if pose is not None:
                 if overwrite or not (out_dir / crop_name).exists():
-                    crop = common.rectified_crop(img, pose["T"], cam, scale)
+                    crop = common.rectified_crop(img, pose["T"], cam, scale, session=name)
                     if crop is not None:
                         cv2.imwrite(str(out_dir / crop_name), crop)
                 else:

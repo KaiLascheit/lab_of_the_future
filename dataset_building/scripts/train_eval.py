@@ -3,6 +3,10 @@ Train a pressed / not-pressed classifier on frozen pretrained features and evalu
 
 Install:  pip install torch torchvision scikit-learn matplotlib pandas joblib
 Usage:    python train_eval.py [--backbone dinov2_vits14|resnet18|resnet50|pixels] [--curve]
+                               [--train-sessions S ...] [--test-sessions S ...] [--run-name NAME]
+          e.g. compare p1000-only vs mixed training, both scored on the p1000 test frames:
+            python train_eval.py --train-sessions p1000_154354 --test-sessions p1000_154354 --run-name p1000_only
+            python train_eval.py --test-sessions p1000_154354 --run-name mixed
 
 Pipeline
   1. Image features for every crop that is used (cached in data/features/<backbone>.npz).
@@ -15,7 +19,7 @@ Pipeline
                       against labelled press events: recall, precision, onset error
   4. --curve: learning curve over the number of training events per class.
 
-Output: data/results/<backbone>/ metrics.json, predictions.csv, model.joblib,
+Output: data/results/<run name or backbone>/ metrics.json (incl. per-session), predictions.csv, model.joblib,
         timeline_<session>.png, learning_curve.csv (with --curve)
 """
 import argparse
@@ -82,14 +86,24 @@ def pixel_features(img_bgr):
 
 
 def get_features(paths, backbone):
-    """Features for the given crop paths (relative to data/), using and updating a cache."""
+    """Features for the given crop paths (relative to data/), using and updating a cache.
+    A cached entry is recomputed if its crop file changed since (e.g. re-extracted
+    with a different crop box)."""
     C.FEATURES_DIR.mkdir(parents=True, exist_ok=True)
     cache_file = C.FEATURES_DIR / f"{backbone}_{INPUT_HW[0]}x{INPUT_HW[1]}.npz"
-    cache = {}
+    cache, mtimes = {}, {}
     if cache_file.exists():
         z = np.load(cache_file, allow_pickle=True)
         cache = dict(zip(z["paths"].tolist(), z["feats"]))
-    missing = [p for p in dict.fromkeys(paths) if p not in cache]
+        if "mtimes" in z:
+            mtimes = dict(zip(z["paths"].tolist(), z["mtimes"].tolist()))
+    current = {p: (C.DATA_DIR / p).stat().st_mtime for p in dict.fromkeys(paths)}
+    stale = [p for p in current if p in cache and mtimes.get(p) != current[p]]
+    for p in stale:
+        del cache[p]
+    if stale:
+        print(f"{len(stale)} crops changed since their features were cached; recomputing")
+    missing = [p for p in current if p not in cache]
     if missing:
         model, torch = load_backbone(backbone)
         from tqdm import tqdm
@@ -102,8 +116,10 @@ def get_features(paths, backbone):
                 x = torch.from_numpy(np.stack([preprocess(im) for im in imgs]))
                 feats = model(x).cpu().numpy()
             cache.update(zip(batch, feats))
+            mtimes.update((p, current[p]) for p in batch)
         np.savez(cache_file, paths=np.array(list(cache), dtype=object),
-                 feats=np.stack(list(cache.values())))
+                 feats=np.stack(list(cache.values())),
+                 mtimes=np.array([mtimes.get(p, -1.0) for p in cache], dtype=np.float64))
     return np.stack([cache[p] for p in paths])
 
 
@@ -223,18 +239,26 @@ def evaluate(model, df_test, X_by_path):
     use = df[(df["usable"] == 1)]
     metrics = {"frame_raw": frame_metrics(use["target"].to_numpy(), use["p"].to_numpy()),
                "frame_smoothed": frame_metrics(use["target"].to_numpy(), use["p_smooth"].to_numpy())}
+    def summarise(g, p, m, o):
+        return {"labelled_press_events": g, "predicted_press_events": p, "matched": m,
+                "event_recall": m / g if g else None,
+                "event_precision": m / p if p else None,
+                "median_onset_error_frames": float(np.median(o)) if o else None}
+
     n_gt = n_pred = n_match = 0
     onsets = []
+    metrics["per_session"] = {}
     for s, idx in df.groupby("session").groups.items():
         g, p, m, o = event_metrics(df.loc[idx].sort_values("frame_idx"))
         n_gt, n_pred, n_match = n_gt + g, n_pred + p, n_match + m
         onsets += o
-    metrics["events"] = {
-        "labelled_press_events": n_gt, "predicted_press_events": n_pred, "matched": n_match,
-        "event_recall": n_match / n_gt if n_gt else None,
-        "event_precision": n_match / n_pred if n_pred else None,
-        "median_onset_error_frames": float(np.median(onsets)) if onsets else None,
-    }
+        u = use[use["session"] == s]
+        metrics["per_session"][s] = {
+            "frame_smoothed": (frame_metrics(u["target"].to_numpy(), u["p_smooth"].to_numpy())
+                               if len(u) else None),
+            "events": summarise(g, p, m, o),
+        }
+    metrics["events"] = summarise(n_gt, n_pred, n_match, onsets)
     return metrics, df
 
 
@@ -243,6 +267,11 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--backbone", default="dinov2_vits14")
     ap.add_argument("--curve", action="store_true", help="also compute a learning curve")
+    ap.add_argument("--train-sessions", nargs="+", metavar="SESSION",
+                    help="train only on these sessions' train frames (default: all)")
+    ap.add_argument("--test-sessions", nargs="+", metavar="SESSION",
+                    help="evaluate only on these sessions' test frames (default: all)")
+    ap.add_argument("--run-name", help="results folder name (default: the backbone name)")
     args = ap.parse_args()
 
     ds_path = C.DATASET_DIR / "dataset.csv"
@@ -251,6 +280,17 @@ def main():
     df = pd.read_csv(ds_path, keep_default_na=False)
     train = df[(df["split"] == "train") & (df["train_pick"] == 1)]
     test = df[df["split"] == "test"]
+    for flag, sel, part in (("--train-sessions", args.train_sessions, "train"),
+                            ("--test-sessions", args.test_sessions, "test")):
+        if sel:
+            unknown = set(sel) - set(df["session"])
+            if unknown:
+                raise SystemExit(f"{flag}: not in dataset.csv: {sorted(unknown)}. "
+                                 f"Known: {sorted(set(df['session']))}")
+            if part == "train":
+                train = train[train["session"].isin(sel)]
+            else:
+                test = test[test["session"].isin(sel)]
     if train.empty or test.empty:
         raise SystemExit("Need both train and test frames - check the split settings in build_dataset.py")
 
@@ -268,9 +308,11 @@ def main():
     metrics["train"] = {"frames": int(len(y)), "events": int(len(set(groups))), "C": best_c,
                         "cv_balanced_accuracy": cv_score if cv_score >= 0 else None}
     metrics["settings"] = {"backbone": args.backbone, "threshold": THRESHOLD,
-                           "smooth_window": SMOOTH_WINDOW, "min_event_frames": MIN_EVENT_FRAMES}
+                           "smooth_window": SMOOTH_WINDOW, "min_event_frames": MIN_EVENT_FRAMES,
+                           "train_sessions": sorted(set(train["session"])),
+                           "test_sessions": sorted(set(test["session"]))}
 
-    out = C.RESULTS_DIR / args.backbone
+    out = C.RESULTS_DIR / (args.run_name or args.backbone)
     out.mkdir(parents=True, exist_ok=True)
     for s, idx in pred_df.groupby("session").groups.items():
         plot_timeline(pred_df.loc[idx].sort_values("frame_idx"), s, out / f"timeline_{s}.png")
@@ -289,6 +331,14 @@ def main():
           f"{ev['predicted_press_events']} predicted"
           + (f", median onset error {ev['median_onset_error_frames']:+.0f} frames"
              if ev["median_onset_error_frames"] is not None else ""))
+    if len(metrics["per_session"]) > 1:
+        print("Per test session (smoothed frames | events):")
+        for s, m in metrics["per_session"].items():
+            f_, e = m["frame_smoothed"], m["events"]
+            fr_txt = (f"n {f_['n']:>5}  bal.acc {f_['balanced_accuracy']:.3f}  F1 {f_['f1_pressed']:.3f}"
+                      if f_ else "no usable frames")
+            print(f"  {s:<28} {fr_txt}  | {e['matched']}/{e['labelled_press_events']} found, "
+                  f"{e['predicted_press_events']} predicted")
 
     if args.curve:
         rng = np.random.default_rng(SEED)

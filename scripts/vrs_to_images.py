@@ -8,11 +8,12 @@ import os
 import sys
 import cv2
 from tqdm import tqdm
+from pathlib import Path
 from projectaria_tools.core import data_provider
 from projectaria_tools.core.sensor_data import SensorDataType
 
 vrs_path = sys.argv[1] if len(sys.argv) > 1 else "recording.vrs"
-out_dir = sys.argv[2] if len(sys.argv) > 2 else "frames"
+out_dir = sys.argv[2] if len(sys.argv) > 2 else Path("frames") / Path(vrs_path).stem
 
 # 1. Open the VRS file
 provider = data_provider.create_vrs_data_provider(vrs_path)
@@ -29,7 +30,7 @@ for stream_id in provider.get_all_streams():
         continue
     
     num_frames = provider.get_num_data(stream_id)
-    stream_dir = os.path.join(out_dir, label)
+    stream_dir = out_dir # os.path.join(out_dir, label)
     os.makedirs(stream_dir, exist_ok=True)
     print(f"{label} ({stream_id}): {num_frames} frames")
 
