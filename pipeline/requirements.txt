@@ -1,0 +1,15 @@
+numpy
+opencv-contrib-python      # cv2.aruco (AprilTag 36h11)
+scipy                      # rigid-body bundle adjustment
+tqdm
+projectaria-tools          # VRS reading + camera calibration
+ultralytics                # YOLO-World + MobileSAM (weights download on first use)
+google-genai               # Gemini
+python-dotenv              # GEMINI_API_KEY from .env
+pydantic
+# press classifier (your dataset_building/scripts code)
+torch
+torchvision
+scikit-learn
+joblib
+pandas
